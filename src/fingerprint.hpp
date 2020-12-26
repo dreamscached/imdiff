@@ -10,9 +10,9 @@
 #include "string.hpp"
 
 namespace IMD::Fingerprint {
-    Magick::Image fingerprint(Magick::Image &image);
+    Magick::Image getFingerprint(Magick::Image &image);
 
-    double score(Magick::Image &first, Magick::Image &second);
+    double getSimilarityScore(Magick::Image &first, Magick::Image &second);
 
     std::string toString(Magick::Image &fingerprint);
 }

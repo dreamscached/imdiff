@@ -4,14 +4,14 @@
 
 #include "fingerprint.hpp"
 
-Magick::Image IMD::Fingerprint::fingerprint(Magick::Image &image) {
+Magick::Image IMD::Fingerprint::getFingerprint(Magick::Image &image) {
     Magick::Image fingerprint(image);
     fingerprint.type(Magick::GrayscaleType);
     fingerprint.resize(Magick::Geometry(8, 8));
     return fingerprint;
 }
 
-double IMD::Fingerprint::score(Magick::Image &first, Magick::Image &second) {
+double IMD::Fingerprint::getSimilarityScore(Magick::Image &first, Magick::Image &second) {
     Magick::Pixels firstPixels(first);
     Magick::Pixels secondPixels(second);
 

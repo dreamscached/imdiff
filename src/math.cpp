@@ -15,3 +15,7 @@ double IMD::Math::mean(int count, const double *values) {
 double IMD::Math::min(double first, double second) {
     return first > second ? second : first;
 }
+
+double IMD::Math::max(double first, double second) {
+    return first < second ? second : first;
+}

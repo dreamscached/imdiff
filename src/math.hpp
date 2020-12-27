@@ -9,6 +9,8 @@ namespace IMD::Math {
     double mean(int count, const double values[]);
 
     double min(double first, double second);
+
+    double max(double first, double second);
 }
 
 #endif //IMDIFF_MATH_HPP

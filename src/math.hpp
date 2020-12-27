@@ -7,6 +7,7 @@
 
 namespace IMD::Math {
     double mean(int count, const double values[]);
+
     double min(double first, double second);
 }
 

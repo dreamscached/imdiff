@@ -13,6 +13,16 @@ Magick::Image IMD::Fingerprint::getFingerprint(Magick::Image &image) {
     return fingerprint;
 }
 
+Magick::Image IMD::Fingerprint::getFingerprint(std::string &path) {
+    Magick::Image image(path);
+    return IMD::Fingerprint::getFingerprint(image);
+}
+
+Magick::Image IMD::Fingerprint::getFingerprint(std::filesystem::path &path) {
+    Magick::Image image(path);
+    return IMD::Fingerprint::getFingerprint(image);
+}
+
 double IMD::Fingerprint::getSimilarityScore(Magick::Image &first, Magick::Image &second) {
     Magick::Pixels firstPixels(first);
     Magick::Pixels secondPixels(second);

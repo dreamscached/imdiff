@@ -45,9 +45,3 @@ double IMD::Fingerprint::getSimilarityScore(Magick::Image &first, Magick::Image 
 
     return IMD::Math::mean(64, values);
 }
-
-std::string IMD::Fingerprint::toString(Magick::Image &fingerprint) {
-    Magick::Blob blob;
-    fingerprint.write(&blob);
-    return blob.base64();
-}

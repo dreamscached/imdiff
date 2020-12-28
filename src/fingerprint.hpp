@@ -13,13 +13,11 @@
 namespace IMD::Fingerprint {
     Magick::Image getFingerprint(Magick::Image &image);
 
-    double getSimilarityScore(Magick::Image &first, Magick::Image &second);
-
     Magick::Image getFingerprint(std::filesystem::path &path);
 
     Magick::Image getFingerprint(std::string &path);
 
-    std::string toString(Magick::Image &fingerprint);
+    double getSimilarityScore(Magick::Image &first, Magick::Image &second);
 }
 
 #endif //IMDIFF_FINGERPRINT_HPP

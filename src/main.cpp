@@ -2,6 +2,8 @@
 // Created by dreamscached on 25.12.2020.
 //
 
+#include "libintl.hpp"
+#include "locale.hpp"
 #include "options.hpp"
 #include "string.hpp"
 #include "filesystem.hpp"
@@ -9,98 +11,72 @@
 #include "images.hpp"
 
 int main(int argc, char **argv) {
+    setlocale(LC_ALL, "");
+    bindtextdomain("imdiff", "/usr/share/locale");
+    textdomain("imdiff");
+
     auto options = IMD::Options::parseOptions(argc, argv);
 
-    auto originalFingerprint = IMD::Fingerprint::getFingerprint(options.originalPath);
+    auto originalImage = IMD::Images::readImage(options.originalPath);
+    if (originalImage != nullptr) {
+        auto originalFingerprint = IMD::Fingerprint::getFingerprint(*originalImage);
 
-    for (auto &argumentPath : options.processPaths) {
-        if (std::filesystem::is_directory(argumentPath)) {
-            if (options.recurse) {
-                for (auto &entry : std::filesystem::recursive_directory_iterator(argumentPath)) {
-                    auto path = entry.path();
-                    if (entry.is_directory() || path == options.originalPath) {
-                        continue;
-                    }
-
-                    std::cout << path;
-                    try {
-                        auto fingerprint = IMD::Fingerprint::getFingerprint(path);
-                        if (options.exportFingerprints) {
-                            std::cout << "\t" << IMD::Images::toString(fingerprint);
-                        }
-                        if (options.printSimilarityScore) {
-                            std::cout << "\t" << IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);
-                        }
-                    } catch (Magick::ErrorCorruptImage &e) {
-                        if (options.exportFingerprints) {
-                            std::cout << "\t-" << std::endl;
-                        }
-                        if (options.printSimilarityScore) {
-                            std::cout << "\t-" << std::endl;
-                        }
-                        std::cerr << "Skipping corrupt image " << path << "." << std::endl;
-                    } catch (Magick::ErrorMissingDelegate &e) {
-                        if (options.exportFingerprints) {
-                            std::cout << "\t-" << std::endl;
-                        }
-                        if (options.printSimilarityScore) {
-                            std::cout << "\t-" << std::endl;
-                        }
-                        std::cerr << "Skipping image of unknown type " << argumentPath << "." << std::endl;
-                    } catch (Magick::ErrorImage &e) {
-                        if (options.exportFingerprints) {
-                            std::cout << "\t-" << std::endl;
-                        }
-                        if (options.printSimilarityScore) {
-                            std::cout << "\t-" << std::endl;
-                        }
-                        std::cerr << "Skipping bad image " << argumentPath << "." << std::endl;
-                    }
-                    std::cout << std::endl;
-                }
-            } else {
-                std::cerr << "Skipping directory " << argumentPath << "." << std::endl;
-            }
-        } else {
+        for (auto &argumentPath : options.processPaths) {
             if (argumentPath == options.originalPath) {
                 continue;
             }
 
-            auto fingerprint = IMD::Fingerprint::getFingerprint(argumentPath);
-            try {
-                std::cout << argumentPath;
-                if (options.exportFingerprints) {
-                    std::cout << "\t" << IMD::Images::toString(fingerprint);
+            if (std::filesystem::is_directory(argumentPath)) {
+                if (options.recurse) {
+                    for (auto &entry : std::filesystem::recursive_directory_iterator(argumentPath)) {
+                        auto path = entry.path();
+
+                        if (entry.is_directory() || entry.path() == options.originalPath) {
+                            continue;
+                        }
+
+                        auto image = IMD::Images::readImage(path);
+                        if (image != nullptr) {
+                            auto fingerprint = IMD::Fingerprint::getFingerprint(*image);
+
+                            std::cout << path.c_str();
+
+                            if (options.printSimilarityScore) {
+                                auto score = IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);
+                                std::cout << "\t" << score;
+                            }
+
+                            if (options.exportFingerprints) {
+                                auto base64 = IMD::Images::toString(fingerprint);
+                                std::cout << "\t" << base64;
+                            }
+
+                            std::cout << std::endl;
+                        }
+                    }
+                } else {
+                    std::cerr << printf(_("Skipping directory %s."), argumentPath.c_str()) << std::endl;
                 }
-                if (options.printSimilarityScore) {
-                    std::cout << "\t" << IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);
+            } else {
+                auto image = IMD::Images::readImage(argumentPath);
+                if (image != nullptr) {
+                    auto fingerprint = IMD::Fingerprint::getFingerprint(*image);
+
+                    std::cout << argumentPath.c_str();
+
+                    if (options.printSimilarityScore) {
+                        auto score = IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);
+                        std::cout << "\t" << score;
+                    }
+
+                    if (options.exportFingerprints) {
+                        auto base64 = IMD::Images::toString(fingerprint);
+                        std::cout << "\t" << base64;
+                    }
+
+                    std::cout << std::endl;
                 }
-            } catch (Magick::ErrorCorruptImage &e) {
-                if (options.exportFingerprints) {
-                    std::cout << "\t-" << std::endl;
-                }
-                if (options.printSimilarityScore) {
-                    std::cout << "\t-" << std::endl;
-                }
-                std::cerr << "Skipping corrupt image " << argumentPath << "." << std::endl;
-            } catch (Magick::ErrorMissingDelegate &e) {
-                if (options.exportFingerprints) {
-                    std::cout << "\t-" << std::endl;
-                }
-                if (options.printSimilarityScore) {
-                    std::cout << "\t-" << std::endl;
-                }
-                std::cerr << "Skipping image of unknown type " << argumentPath << "." << std::endl;
-            } catch (Magick::ErrorImage &e) {
-                if (options.exportFingerprints) {
-                    std::cout << "\t-" << std::endl;
-                }
-                if (options.printSimilarityScore) {
-                    std::cout << "\t-" << std::endl;
-                }
-                std::cerr << "Skipping bad image " << argumentPath << "." << std::endl;
             }
-            std::cout << std::endl;
         }
     }
 }

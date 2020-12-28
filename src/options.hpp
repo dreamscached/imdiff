@@ -6,6 +6,7 @@
 #define IMDIFF_OPTIONS_HPP
 
 #include "cli11.hpp"
+#include "libintl.hpp"
 
 namespace IMD::Options {
     struct Options {

@@ -18,8 +18,8 @@ IMD::Options::Options IMD::Options::parseOptions(int argc, char **argv) {
                  "Export fingerprints in Base64 format");
     app.add_flag("-s,--score", options.printSimilarityScore, "Print similarity score")
             ->default_val(options.printSimilarityScore);
-    app.add_flag("-n,--no-header", options.printHeader, "Do not print table header")
-            ->default_val(options.printHeader);
+    app.add_flag("-n,--no-header", options.noHeader, "Do not print table header")
+            ->default_val(options.noHeader);
     app.add_flag("-H,--human-readable", options.humanReadable, "Print score in human-readable format")
             ->default_val(options.humanReadable);
 
@@ -33,7 +33,7 @@ IMD::Options::Options IMD::Options::parseOptions(int argc, char **argv) {
         }
 
         if (app.count("-n")) {
-            options.printHeader = false;
+            options.noHeader = true;
         }
 
         if (app.count("-H")) {

@@ -14,7 +14,7 @@ namespace IMD::Options {
         bool recurse{false};
         bool exportFingerprints{false};
         bool printSimilarityScore{true};
-        bool printHeader{true};
+        bool noHeader{false};
         bool humanReadable{false};
     };
 

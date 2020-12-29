@@ -11,17 +11,19 @@
 int main(int argc, char **argv) {
     auto options = IMD::Options::parseOptions(argc, argv);
 
-    std::cout << "PATH";
+    if (!options.noHeader) {
+        std::cout << "PATH";
 
-    if (options.printSimilarityScore) {
-        std::cout << "\t" << "SCORE";
+        if (options.printSimilarityScore) {
+            std::cout << "\t" << "SCORE";
+        }
+
+        if (options.exportFingerprints) {
+            std::cout << "\t" << "FINGERPRINT";
+        }
+
+        std::cout << "\n";
     }
-
-    if (options.exportFingerprints) {
-        std::cout << "\t" << "FINGERPRINT";
-    }
-
-    std::cout << "\n";
 
     auto originalImage = IMD::Images::readImage(options.originalPath);
     if (originalImage != nullptr) {

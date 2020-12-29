@@ -45,12 +45,12 @@ int main(int argc, char **argv) {
                                 std::cout << "\t" << base64;
                             }
 
-                            std::cout << std::endl;
+                            std::cout << "\n";
                             delete image;
                         }
                     }
                 } else {
-                    std::cerr << printf("Skipping directory %s.", argumentPath.c_str()) << std::endl;
+                    std::cerr << printf("Skipping directory %s.", argumentPath.c_str()) << "\n";
                 }
             } else {
                 auto image = IMD::Images::readImage(argumentPath);
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
                         std::cout << "\t" << base64;
                     }
 
-                    std::cout << std::endl;
+                    std::cout << "\n";
                     delete image;
                 }
             }

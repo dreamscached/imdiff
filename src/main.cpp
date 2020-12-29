@@ -77,4 +77,6 @@ int main(int argc, char **argv) {
 
         delete originalImage;
     }
+
+    exit(0);
 }

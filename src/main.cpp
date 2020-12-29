@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
                         if (image != nullptr) {
                             auto fingerprint = IMD::Fingerprint::getFingerprint(*image);
 
-                            std::cout << path.c_str();
+                            std::cout << path.string();
 
                             if (options.printSimilarityScore) {
                                 auto score = IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);
@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
                 if (image != nullptr) {
                     auto fingerprint = IMD::Fingerprint::getFingerprint(*image);
 
-                    std::cout << argumentPath.c_str();
+                    std::cout << argumentPath;
 
                     if (options.printSimilarityScore) {
                         auto score = IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);

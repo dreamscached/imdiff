@@ -14,6 +14,8 @@ namespace IMD::Options {
         bool recurse{false};
         bool exportFingerprints{false};
         bool printSimilarityScore{true};
+        bool printHeader{true};
+        bool humanReadable{false};
     };
 
     Options parseOptions(int argc, char **argv);

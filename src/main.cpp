@@ -11,6 +11,18 @@
 int main(int argc, char **argv) {
     auto options = IMD::Options::parseOptions(argc, argv);
 
+    std::cout << "PATH";
+
+    if (options.printSimilarityScore) {
+        std::cout << "\t" << "SCORE";
+    }
+
+    if (options.exportFingerprints) {
+        std::cout << "\t" << "FINGERPRINT";
+    }
+
+    std::cout << "\n";
+
     auto originalImage = IMD::Images::readImage(options.originalPath);
     if (originalImage != nullptr) {
         auto originalFingerprint = IMD::Fingerprint::getFingerprint(*originalImage);
@@ -37,7 +49,12 @@ int main(int argc, char **argv) {
 
                             if (options.printSimilarityScore) {
                                 auto score = IMD::Fingerprint::getSimilarityScore(originalFingerprint, fingerprint);
-                                std::cout << "\t" << score;
+                                if (options.humanReadable) {
+                                    std::cout << "\t";
+                                    std::fprintf(stdout, "%6.2f%%", score * 100);
+                                } else {
+                                    std::cout << "\t" << score;
+                                }
                             }
 
                             if (options.exportFingerprints) {

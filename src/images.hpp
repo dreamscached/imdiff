@@ -8,7 +8,6 @@
 #include "imagemagick.hpp"
 #include "iostream.hpp"
 #include "string.hpp"
-#include "libintl.hpp"
 #include "filesystem.hpp"
 
 namespace IMD::Images {

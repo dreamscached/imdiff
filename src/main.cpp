@@ -2,8 +2,6 @@
 // Created by dreamscached on 25.12.2020.
 //
 
-#include "libintl.hpp"
-#include "locale.hpp"
 #include "options.hpp"
 #include "string.hpp"
 #include "filesystem.hpp"
@@ -11,10 +9,6 @@
 #include "images.hpp"
 
 int main(int argc, char **argv) {
-    setlocale(LC_ALL, "");
-    bindtextdomain("imdiff", "/usr/share/locale");
-    textdomain("imdiff");
-
     auto options = IMD::Options::parseOptions(argc, argv);
 
     auto originalImage = IMD::Images::readImage(options.originalPath);
@@ -56,7 +50,7 @@ int main(int argc, char **argv) {
                         }
                     }
                 } else {
-                    std::cerr << printf(_("Skipping directory %s."), argumentPath.c_str()) << std::endl;
+                    std::cerr << printf("Skipping directory %s.", argumentPath.c_str()) << std::endl;
                 }
             } else {
                 auto image = IMD::Images::readImage(argumentPath);

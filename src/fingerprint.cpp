@@ -25,11 +25,11 @@ double IMD::Fingerprint::getSimilarityScore(Magick::Image &first, Magick::Image 
         for (auto i = 0; i < 8; i++) {
             // Since fingerprint image is grayscale, there's no need to fetch other channels.
             // For instance, here we implicitly use R (pointer offset +0.)
-            double firstValue = 255 * QuantumScale * *firstRow++;
-            double secondValue = 255 * QuantumScale * *secondRow++;
+            double firstValue = std::abs(255 * QuantumScale * *firstRow++);
+            double secondValue = std::abs(255 * QuantumScale * *secondRow++);
 
             // We need to get double in range [0; 1], thus we need to divide lesser by greater.
-            values[8 * j + i] = IMD::Math::min(firstValue, secondValue) / IMD::Math::max(firstValue, secondValue);
+            values[8 * j + i] = std::min(firstValue, secondValue) / std::max(firstValue, secondValue);
         }
     }
 

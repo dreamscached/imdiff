@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
                             }
 
                             std::cout << std::endl;
+                            delete image;
                         }
                     }
                 } else {
@@ -75,8 +76,11 @@ int main(int argc, char **argv) {
                     }
 
                     std::cout << std::endl;
+                    delete image;
                 }
             }
         }
+
+        delete originalImage;
     }
 }
